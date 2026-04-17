@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Security System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef2f7;
+            margin: 0;
+            padding: 40px;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .main-card {
+            background: white;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 40px;
+            color: #14213d;
+        }
+
+        p {
+            color: #6b7280;
+        }
+
+        .cards {
+            display: flex;
+            gap: 20px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .info-card {
+            flex: 1;
+            min-width: 220px;
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .info-card h3 {
+            margin: 0 0 10px 0;
+            color: #1d4ed8;
+        }
+
+        .section {
+            background: white;
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            margin-top: 0;
+            margin-bottom: 18px;
+            color: #14213d;
+        }
+
+        .add-btn {
+            display: inline-block;
+            margin-bottom: 18px;
+            background: #2563eb;
+            color: white;
+            padding: 10px 18px;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .add-btn:hover {
+            background: #1d4ed8;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        th {
+            background: #1e3a8a;
+            color: white;
+            text-align: left;
+            padding: 14px;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #e5e7eb;
+            background: #fff;
+        }
+
+        tr:hover td {
+            background: #f9fafb;
+        }
+
+        .actions a {
+            text-decoration: none;
+            margin-right: 12px;
+            font-weight: bold;
+        }
+
+        .edit {
+            color: #16a34a;
+        }
+
+        .delete {
+            color: #dc2626;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .active {
+            background: #16a34a;
+        }
+
+        .inactive {
+            background: #6b7280;
+        }
+
+        .alarm {
+            background: #dc2626;
+        }
+
+        .notif-info {
+            background: #2563eb;
+        }
+
+        .notif-warning {
+            background: #f59e0b;
+        }
+
+        .notif-danger {
+            background: #dc2626;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="main-card">
+            <h1>Security System</h1>
+            <p>Веб-додаток для управління користувачами, датчиками та сповіщеннями системи безпеки</p>
+
+            <div class="cards">
+                <div class="info-card">
+                    <h3>Користувачі</h3>
+                    <p>Перегляд, додавання, редагування та видалення користувачів</p>
+                </div>
+                <div class="info-card">
+                    <h3>Датчики</h3>
+                    <p>Перегляд, додавання, редагування та видалення датчиків</p>
+                </div>
+                <div class="info-card">
+                    <h3>Сповіщення</h3>
+                    <p>Перегляд, додавання, редагування та видалення сповіщень</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Користувачі</h2>
+            <a class="add-btn" href="{{ url_for('add_user') }}">+ Додати користувача</a>
+
+            <table>
+                <tr>
+                    <th>Ім'я</th>
+                    <th>Email</th>
+                    <th>Телефон</th>
+                    <th>Дії</th>
+                </tr>
+
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.phone }}</td>
+                    <td class="actions">
+                        <a class="edit" href="{{ url_for('edit_user', user_id=user.id) }}">Редагувати</a>
+                        <a class="delete" href="{{ url_for('delete_user', user_id=user.id) }}">Видалити</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Датчики</h2>
+            <a class="add-btn" href="{{ url_for('add_sensor') }}">+ Додати датчик</a>
+
+            <table>
+                <tr>
+                    <th>Тип датчика</th>
+                    <th>Локація</th>
+                    <th>Статус</th>
+                    <th>Користувач</th>
+                    <th>Дії</th>
+                </tr>
+
+                {% for sensor in sensors %}
+                <tr>
+                    <td>{{ sensor.sensor_type }}</td>
+                    <td>{{ sensor.location }}</td>
+                    <td>
+                        {% if sensor.status == 'Active' %}
+                            <span class="status-badge active">Active</span>
+                        {% elif sensor.status == 'Inactive' %}
+                            <span class="status-badge inactive">Inactive</span>
+                        {% else %}
+                            <span class="status-badge alarm">Alarm</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ sensor.user.name }}</td>
+                    <td class="actions">
+                        <a class="edit" href="{{ url_for('edit_sensor', sensor_id=sensor.id) }}">Редагувати</a>
+                        <a class="delete" href="{{ url_for('delete_sensor', sensor_id=sensor.id) }}">Видалити</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Сповіщення</h2>
+            <a class="add-btn" href="{{ url_for('add_notification') }}">+ Додати сповіщення</a>
+
+            <table>
+                <tr>
+                    <th>Повідомлення</th>
+                    <th>Тип</th>
+                    <th>Користувач</th>
+                    <th>Дії</th>
+                </tr>
+
+                {% for notification in notifications %}
+                <tr>
+                    <td>{{ notification.message }}</td>
+                    <td>
+                        {% if notification.notif_type == 'Info' %}
+                            <span class="status-badge notif-info">Info</span>
+                        {% elif notification.notif_type == 'Warning' %}
+                            <span class="status-badge notif-warning">Warning</span>
+                        {% else %}
+                            <span class="status-badge notif-danger">Danger</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ notification.user.name }}</td>
+                    <td class="actions">
+                        <a class="edit" href="{{ url_for('edit_notification', notification_id=notification.id) }}">Редагувати</a>
+                        <a class="delete" href="{{ url_for('delete_notification', notification_id=notification.id) }}">Видалити</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+    </div>
+</body>
+</html>

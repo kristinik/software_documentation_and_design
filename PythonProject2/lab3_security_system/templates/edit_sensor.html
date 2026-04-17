@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Редагувати датчик</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef2f7;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #14213d;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 22px;
+            width: 100%;
+            padding: 12px;
+            background: #16a34a;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 18px;
+            text-decoration: none;
+            color: #2563eb;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Редагувати датчик</h1>
+
+        <form method="post">
+            <label>Тип датчика:</label>
+            <select name="sensor_type" required>
+                <option value="MotionSensor" {% if sensor.sensor_type == 'MotionSensor' %}selected{% endif %}>MotionSensor</option>
+                <option value="DoorSensor" {% if sensor.sensor_type == 'DoorSensor' %}selected{% endif %}>DoorSensor</option>
+                <option value="SmokeSensor" {% if sensor.sensor_type == 'SmokeSensor' %}selected{% endif %}>SmokeSensor</option>
+            </select>
+
+            <label>Локація:</label>
+            <input type="text" name="location" value="{{ sensor.location }}" required>
+
+            <label>Статус:</label>
+            <select name="status" required>
+                <option value="Active" {% if sensor.status == 'Active' %}selected{% endif %}>Active</option>
+                <option value="Inactive" {% if sensor.status == 'Inactive' %}selected{% endif %}>Inactive</option>
+                <option value="Alarm" {% if sensor.status == 'Alarm' %}selected{% endif %}>Alarm</option>
+            </select>
+
+            <label>Користувач:</label>
+            <select name="user_name" required>
+                {% for user in users %}
+                    <option value="{{ user.name }}" {% if user.name == sensor.user.name %}selected{% endif %}>
+                        {{ user.name }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <button type="submit">Оновити</button>
+        </form>
+
+        <a class="back" href="{{ url_for('index') }}">← Назад</a>
+    </div>
+</body>
+</html>

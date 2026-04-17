@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Додати сповіщення</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef2f7;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #14213d;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 22px;
+            width: 100%;
+            padding: 12px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 18px;
+            text-decoration: none;
+            color: #2563eb;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Додати сповіщення</h1>
+
+        <form method="post">
+            <label>Повідомлення:</label>
+            <input type="text" name="message" required>
+
+            <label>Тип сповіщення:</label>
+            <select name="notif_type" required>
+                <option value="">Оберіть тип</option>
+                <option value="Info">Info</option>
+                <option value="Warning">Warning</option>
+                <option value="Danger">Danger</option>
+            </select>
+
+            <label>Користувач:</label>
+            <select name="user_name" required>
+                <option value="">Оберіть користувача</option>
+                {% for user in users %}
+                    <option value="{{ user.name }}">{{ user.name }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit">Зберегти</button>
+        </form>
+
+        <a class="back" href="{{ url_for('index') }}">← Назад</a>
+    </div>
+</body>
+</html>
